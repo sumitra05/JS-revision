@@ -1,0 +1,173 @@
+1) What is hoisting?
+Ans. Hoisting is the default behavior of moving all the declarations at the top of the scope before code execution.
+     Basically, it gives us an advantage that no matter where functions and variables are declared,
+     they are moved to the top of their scope regardless of whether their scope is global or local.
+     Function, classes and variables declared using var are hoisted,
+     Let and const are also hoisted(but unlike var, they are not initialized with default value undefined), but if used before initialization will throw a :ReferenceError -> value is not defined.
+
+2) What is scoping?
+Ans.Scope in JavaScript refers to the current context of code, which determines the accessibility of variables to JavaScript.
+ The two types of scope are local and global: Global variables are those declared outside of a block. Local variables are those declared inside of a block.
+
+3) How are var, let const different?
+Ans.var declarations are globally scoped or function scoped while let and const are block scoped.
+ var variables can be updated and re-declared within its scope;
+ let variables can be updated but not re-declared; const variables can neither be updated nor re-declared.
+
+4) What are the two main differences in arrow functions?
+Ans. -regular functions are constructible, they can be called using the new keyword.
+     -the arrow functions are only callable and not constructible, i.e arrow functions can never be used as constructor functions.
+     -Hence, they can never be invoked with the new keyword.
+     -Arrow function don't have keyword: this, if accessed will taken from outside(parent).
+
+5) Does Call apply bind work for arrow functions?
+Ans. Call, apply and bind is not suitable for arrow functions. Because they were designed for executing in different scopes, but arrow function use scope of parent.
+     Since arrow functions do not have their own this, the methods call() or apply() can only pass in parameters.
+
+6) What does call apply bind do?
+Ans. The call() and apply() are very similar methods. They both execute the bound function on the object immediately. The bind() method does not execute the function right away. Instead, it creates and returns a bound function that can be executed later.
+
+7) What are closures?
+Ans. a closure gives you access to an outer function's scope from an inner function.
+     All functions in javascript are closures.
+     When a function runs, a new lexical environment is created automatically to store local variables and parameters of call.
+
+8) Write a program to debounce a search bar?
+Ans. Debounce : limiting the rate of function calls.
+     it is used to improve browser performance.
+
+program : 
+        <html>
+            <body>
+                <button id="debounce">
+                    Debounce
+                </button>
+                <script>
+                var button = document.getElementById("debounce");
+                const debounce = (func, delay) => {
+                    let debounceTimer
+                    return function() {
+                        const context = this
+                        const args = arguments
+                            clearTimeout(debounceTimer)
+                                debounceTimer
+                            = setTimeout(() => func.apply(context, args), delay)
+                    }
+                } 
+                    button.addEventListener('click', debounce(function() {
+                    alert("Hello\nNo matter how many times you" + "click the debounce button, I get " + "executed once every 3 seconds!!")
+                    }, 3000));
+                </script>
+            </body>
+        </html>
+
+9) Write a program to throttle a search bar?
+Ans. Throttle : executing after every X milliseconds, only first event is executed immediately.
+
+10) create a custom method for an array called myMap, use prototype chain to achieve this.
+Ans. => const arr = [];
+        arr.__proto__.myMap = function(arr, func) {    
+        const mapArr = []; 
+        for(let i=0; i<arr.length; i++) {        
+            const result = func(arr[i], i, arr);        
+            mapArr.push(result);    
+        }    
+        return mapArr;
+    }
+    arr.myMap([1,2,3,4,5], (item) => item * 5);
+    // output: [5, 10, 15, 20, 25];
+
+11) What is event bubbling?
+Ans. Event bubbling directs an event to its intended target,
+     and works like this: When an object (like a button) is clicked, an event is directed to the object. If an event handler is set for the object, the event handler is triggered. Then the event bubbles up (like a bubble in water) to the objects parent.
+
+12) What is event loop?
+Ans. The event loop concept is simple. There's a endless loop, where javascript engine waits for tasks, executes them and waits for more tasks.
+     In other words : An event loop is something that pulls stuff out of the queue and places it onto the function execution stack whenever the function stack becomes empty.
+
+     Algorithm for event loop: 
+        1. while (tasks) {
+               executeThem();  // starting from the oldest task
+           }
+           // completed
+           more tasks appearing, go to line 1.
+
+13) Explain promises to a 5 year old, with simple examples.
+Ans. Let's assume there is a teacher and student. Now teacher told the student to complete the homework in one week of time and student promised the teacher that homework will be completed in the given deadline. 
+     So, after one week if the homework is completed by student => then the promise made is resolved, else if homework is not completed then the promise made by student is broken(rejected).
+     But in either case there is the responsibility of student to inform the teacher.
+
+14) Write a function called sleep that will return a promise, if you do not provide a number to the function, then it will return an error and goto the catch block.
+    Ans.  const sleep = function(time) {
+                return new Promise((resolve, reject) => {
+                    if(typeof(time)==='number') resolve(`success`);
+                    else  reject(`invalid argument, promise accepts only valid numbers`);
+                });
+           }1
+          sleep(500)
+            .then(res => console.log(`slept for ${res} milli seconds`))
+            .then(err => console.log(err));
+
+15) what does async await mean?
+Ans. An async function is a function declared with the async keyword, and the await keyword is permitted within it.
+     Async-await is the better way than using .then().catch(). The word async means that a promise will be returned, and await means waiting until the promise gets fulfilled or rejected.
+
+16) What does the this keyword mean?
+Ans. “This” keyword refers to an object that is executing the current piece of code. It references the object that is executing the current function. If the function being referenced is a regular function, “this” references the global object.
+
+17) What are classes? what are getters and setters?
+Ans. Classes are template for creating object, which contains properties and methods.
+     “get” is the keyword used to retrieving/getting the property value,
+      whereas “set” is used to changing the value of a specific property.
+
+18) How do you declare private and static variables in classes.
+Ans. static   : using keyword: static before variable or function declaration,
+     private  : using keyword: # with variable or function declaration.
+
+19) Create a Calculator class, it should be able to add, reduce multiply and divide. it should have a value getter, and that should return final output. keep the history of changes made as well, and keep that private, and a user should be able to see previous changes made to the value.
+Ans.    class Calculator {
+            #history;
+            constructor(a, b) {
+                this.a = a;
+                this.b = b;
+                this.#history = [];
+            }
+
+            add() {
+                this.#history.push('add');
+                return this.a + this.b;
+            }
+            reduce() {
+                this.#history.push('reduce');
+                return this.a - this.b;
+            }
+            multiply() {
+                this.#history.push('multiply');
+                return this.a * this.b;
+            }
+            divide() {
+                this.#history.push('divide');
+                return this.a / this.b;
+            }
+            showHistory() {
+                return this.#history;
+            }
+        }
+
+20) What is currying?
+Ans. Currying is a advanced technique of working with functions, it basically transforms the function calling from multiple argument passing to a sequence of function with single argument.
+
+21) Write a program to flatten an array.
+Ans. Flatten Array :- Flattening an array is a process of reducing the dimensionality of an array. In other words, it a process of reducing the number of dimensions of an array to a lower number.
+     program :- 
+            const flattenArray = (arr) => {
+            const ans = [];
+                if (Array.isArray(arr)) {
+                    for (let x = 0; x < arr.length; x++) {
+                    ans.push(...flattenArray(arr[x]));
+                    }
+                    return ans;
+                }
+               return [arr];
+            };
+           console.log(flattenArray([1, [2, 3], [3], [[[5]], 6]]));
