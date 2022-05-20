@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Infinite Scrolling</title>
+    <style>
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        overflow: scroll;
+      }
+      img {
+        margin: auto;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container"></div>
+  </body>
+  <script>
+    const container = document.querySelector(".container");
+    const URL = " https://picsum.photos/200/300?random=1";
+
+    function getRandomNum() {
+      return Math.floor(Math.random() * 100);
+    }
+
+    function loadImages(numImages = 25) {
+      let i = 0;
+      while (i < numImages) {
+        const img = document.createElement("img");
+        img.src = `${URL}${getRandomNum()}`;
+        img.style = container.appendChild(img);
+        i++;
+      }
+    }
+    loadImages();
+
+    window.addEventListener("scroll", () => {
+      if (
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight
+      ) {
+        loadImages();
+      }
+    });
+
+    var timerId;
+    var throttleFunction = function (func, delay) {
+      if (timerId) {
+        console.log("present");
+        return;
+      }
+      timerId = setTimeout(function () {
+        func();
+        timerId = undefined;
+      }, delay);
+    };
+  </script>
+</html>

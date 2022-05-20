@@ -24,8 +24,50 @@ Ans. -regular functions are constructible, they can be called using the new keyw
 Ans. Call, apply and bind is not suitable for arrow functions. Because they were designed for executing in different scopes, but arrow function use scope of parent.
      Since arrow functions do not have their own this, the methods call() or apply() can only pass in parameters.
 
+
 6) What does call apply bind do?
-Ans. The call() and apply() are very similar methods. They both execute the bound function on the object immediately. The bind() method does not execute the function right away. Instead, it creates and returns a bound function that can be executed later.
+Ans. The call() and apply() are very similar methods. they both executed the function immediately when called (and returned a value). the bind() returns a function that can be executed later on.
+     The apply() method does the exact same as call(). The difference is that call() accepts an argument list, but apply() accepts an array of arguments.
+     example- call():-
+            var obj = { num: 2 };
+
+                function add(a, b){
+                   return this.num + a + b;
+                }
+            console.log(add.call(obj, 3, 5));
+    
+     example- apply():-
+            var obj = { num: 2 };
+
+                function add(a, b){
+                   return this.num + a + b;
+                }
+            console.log(add.apply(obj, [3, 5]));
+        
+     exmaple- bind():-
+            var obj = { num: 2 };
+
+            function add(a, b){
+               return this.num + a + b;
+            }
+
+            const func = add.bind(obj, 3, 5);
+            func(); // Returns 10;
+
+All togather: 
+        var obj = { num: 2 };
+
+        function add(a, b){
+          return this.num + a + b;
+        }
+
+        const resultCall  = add.call(obj, 3, 5);
+        const resultApply = add.apply(obj, [3, 5]);
+        const funcBind    = add.bind(obj, 3, 5)
+        const resultBind  = funcBind();
+
+        console.log(resultCall, resultApply, resultBind);
+
 
 7) What are closures?
 Ans. a closure gives you access to an outer function's scope from an inner function.
@@ -160,14 +202,21 @@ Ans. Currying is a advanced technique of working with functions, it basically tr
 21) Write a program to flatten an array.
 Ans. Flatten Array :- Flattening an array is a process of reducing the dimensionality of an array. In other words, it a process of reducing the number of dimensions of an array to a lower number.
      program :- 
-            const flattenArray = (arr) => {
-            const ans = [];
-                if (Array.isArray(arr)) {
-                    for (let x = 0; x < arr.length; x++) {
-                    ans.push(...flattenArray(arr[x]));
-                    }
-                    return ans;
-                }
-               return [arr];
-            };
-           console.log(flattenArray([1, [2, 3], [3], [[[5]], 6]]));
+           var array = [1, [2, 3], [3], [[[5]], 6]];
+
+           const flatten = (arr)  =>{
+               someNewArr = arr.reduce((acc,item) =>{
+                  // if item is an arr
+                  // or the item is number
+                  if(Array.isArray(item)){
+                      acc = acc.concat(flatten(item));
+                  }
+                  else{
+                     // acc.push(item);
+                     acc = [...acc,item];
+                  }
+                 return acc;
+               } ,[]);
+               return someNewArr;
+           }
+           console.log(flatten(array));
